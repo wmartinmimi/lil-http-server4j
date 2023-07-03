@@ -30,9 +30,14 @@ class Main {
 
 - Uses Virtual Threads
 
-## Requirement
+## Testing and Running Requirements
 
 - JDK version 20+
+
+## Importing Requirements
+
+- org.slf4j library
+- Testing and Running requirements
 
 ## Development
 
