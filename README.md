@@ -18,7 +18,7 @@ class Main {
         case "/bye" -> new HttpResponses.Status204();
         default -> new HttpResponses.Status404("text/plain-text", "404 error");
       });
-      Thread.ofVirtual().start(server);
+      server.run();
     }
   }
 }
