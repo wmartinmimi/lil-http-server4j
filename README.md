@@ -11,7 +11,7 @@ Not for production uses!
 ```java
 class Main {
   
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
     try (var server = new HttpRequestHandler(20000)) {
       server.setHttpRequestListener((request) -> switch (request.path()) {
         case "/hello" -> new HttpResponses.Status200("text/plain-text", "hello");
