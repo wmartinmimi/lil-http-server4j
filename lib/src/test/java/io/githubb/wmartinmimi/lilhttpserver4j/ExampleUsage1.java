@@ -18,7 +18,7 @@ class ExampleUsage1 {
       server.setHttpRequestListener((request) -> switch (request.path()) {
         case "/hello" -> new HttpResponses.Status200("text/plain-text", "hello");
         case "/bye" -> new HttpResponses.Status204();
-        default -> throw new IllegalStateException("Unexpected value: " + request.path());
+        default -> new HttpResponses.Status404("text/plain-text", "404 error");
       });
       Thread.ofVirtual().start(server);
 

@@ -63,5 +63,39 @@ class HttpRequestHandlerTest {
         hello""", new String(client.getInputStream().readAllBytes()));
   }
 
+  @Test
+  void status204Test() throws IOException {
+    HttpRequestListener listener = (request) -> {
+      assertEquals("GET", request.method());
+      assertEquals("/hello", request.path());
+      return new HttpResponses.Status204();
+    };
+    server.setHttpRequestListener(listener);
+    executor.execute(server);
+    client.connect(new InetSocketAddress("localhost", 20000));
+    client.getOutputStream().write("GET /hello HTTP/1.1\n\n\n".getBytes());
+    client.getOutputStream().flush();
+    assertEquals("HTTP/1.1 204 No Content", new String(client.getInputStream().readAllBytes()));
+  }
+
+  @Test
+  void status404Test() throws IOException {
+    HttpRequestListener listener = (request) -> {
+      assertEquals("GET", request.method());
+      assertEquals("/hello", request.path());
+      return new HttpResponses.Status404("text/plain-text", "404 error");
+    };
+    server.setHttpRequestListener(listener);
+    executor.execute(server);
+    client.connect(new InetSocketAddress("localhost", 20000));
+    client.getOutputStream().write("GET /hello HTTP/1.1\n\n\n".getBytes());
+    client.getOutputStream().flush();
+    assertEquals("""
+        HTTP/1.1 404 Not Found
+        Content-Type: text/plain-text
+        Content-Length: 9
+                  
+        404 error""", new String(client.getInputStream().readAllBytes()));
+  }
 
 }
